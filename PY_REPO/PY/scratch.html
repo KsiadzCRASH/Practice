@@ -1,0 +1,55 @@
+<div id="brinza-task-description">
+<p>Write a class <tt style="white-space:pre-wrap">Solution</tt> that implements a stack data structure. The data structure will hold positive integers within the range [1..1,000,000,000] and should implement the following <i>stack operations</i>:</p>
+<blockquote><ul style="margin: 10px;padding: 0px;"><li><tt style="white-space:pre-wrap">push(value)</tt>: Pushes an element <tt style="white-space:pre-wrap">value</tt> to the stack.</li>
+</ul>
+</blockquote><blockquote><ul style="margin: 10px;padding: 0px;"><li><tt style="white-space:pre-wrap">top()</tt>: Returns the topmost element (without removing it from the stack), or 0 if the stack is empty.</li>
+</ul>
+</blockquote><blockquote><ul style="margin: 10px;padding: 0px;"><li><tt style="white-space:pre-wrap">pop()</tt>: Removes the topmost element from the stack, or does nothing if the stack is empty.</li>
+</ul>
+</blockquote><p>In addition to the above operations, the stack should also support <i>transactions</i> by implementing the following operations:</p>
+<blockquote><ul style="margin: 10px;padding: 0px;"><li><tt style="white-space:pre-wrap">begin()</tt>: Opens a new transaction block. Transaction blocks can be nested; a <tt style="white-space:pre-wrap">begin()</tt> can be issued inside another existing block. Note that no transaction is in progress before the first <tt style="white-space:pre-wrap">begin()</tt> call.</li>
+</ul>
+</blockquote><blockquote><ul style="margin: 10px;padding: 0px;"><li><tt style="white-space:pre-wrap">rollback()</tt>: Undoes every stack operation issued in the current transaction block, and closes the block. Returns <tt style="white-space:pre-wrap">true</tt> if successful, or <tt style="white-space:pre-wrap">false</tt> if no transaction is in progress.</li>
+</ul>
+</blockquote><blockquote><ul style="margin: 10px;padding: 0px;"><li><tt style="white-space:pre-wrap">commit()</tt>: Applies every stack operation issued in the current transaction block, and closes the block. Returns <tt style="white-space:pre-wrap">true</tt> if successful, or <tt style="white-space:pre-wrap">false</tt> if no transaction is in progress.</li>
+</ul>
+</blockquote><p>During the assessment of your program, a single test will execute N operations, where N is at most 100,000. During the assessment there can be more than one instance of class <tt style="white-space:pre-wrap">Solution</tt> working at the same time.</p>
+<p>Example tests:</p>
+<tt style="white-space:pre-wrap">    public static void example1() {
+        Solution sol = new Solution();
+        sol.push(5);
+        sol.push(2);                    // stack: [5,2]
+        assert sol.top() == 2;
+        sol.pop();                      // stack: [5]
+        assert sol.top() == 5;
+
+        Solution sol2 = new Solution();
+        assert sol2.top() == 0;         // top of an empty stack is 0
+        sol2.pop();                     // pop should do nothing
+    }
+
+    public static void example2() {
+        Solution sol = new Solution();
+        sol.push(4);
+        sol.begin();                    // start transaction 1
+        sol.push(7);                    // stack: [4,7]
+        sol.begin();                    // start transaction 2
+        sol.push(2);                    // stack: [4,7,2]
+        assert sol.rollback() == true;  // rollback transaction 2
+        assert sol.top() == 7;          // stack: [4,7]
+        sol.begin();                    // start transaction 3
+        sol.push(10);                   // stack: [4,7,10]
+        assert sol.commit() == true;    // transaction 3 is committed
+        assert sol.top() == 10;
+        assert sol.rollback() == true;  // rollback transaction 1
+        assert sol.top() == 4;          // stack: [4]
+        assert sol.commit() == false;   // there is no open transaction
+    }</tt>
+<p>Complexity:</p>
+<blockquote><ul style="margin: 10px;padding: 0px;"><li>expected worst-case time complexity is O(N);</li>
+<li>expected worst-case space complexity is O(N) (not counting the storage required for input arguments).</li>
+</ul>
+</blockquote><p>Notation used:</p>
+<blockquote><ul style="margin: 10px;padding: 0px;"><li>N − total number of performed operations.</li>
+</ul>
+</blockquote></div>
